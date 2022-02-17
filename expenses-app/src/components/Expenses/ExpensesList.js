@@ -1,4 +1,5 @@
 import ExpenseItem from "./ExpenseItem";
+import Button from "../UI/Button/Button";
 
 const ExpensesList = (props) => {
   if (props.items.length === 0) {
@@ -6,6 +7,7 @@ const ExpensesList = (props) => {
   }
   return (
     <ul className="expenses-list">
+      <Button />
       {props.items.map((expense) => (
         <ExpenseItem
           key={expense.id}

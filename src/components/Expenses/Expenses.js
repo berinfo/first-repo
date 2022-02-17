@@ -8,6 +8,8 @@ import "./Expenses.css";
 
 const Expenses = (props) => {
   const [filteredYear, setFilteredYear] = useState("2020");
+  const [isValid, setIsValid] = useState(true);
+  const [input, setInput] = useState("");
 
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
@@ -16,6 +18,13 @@ const Expenses = (props) => {
   const filteredExpenses = props.items.filter((expense) => {
     return expense.date.getFullYear().toString() === filteredYear;
   });
+  const changeStyle = () => {
+    if (input.trim().length === 0) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  };
 
   return (
     <Card className="expenses">
@@ -25,6 +34,15 @@ const Expenses = (props) => {
       />
       <ExpensesChart expenses={filteredExpenses} />
       <ExpensesList items={filteredExpenses} />
+      <label className={`control ${!isValid ? "invalid" : ""}`}>
+        Dinamic style
+      </label>
+      <input
+        type="text"
+        value={input}
+        onChange={(event) => setInput(event.target.value)}
+      />
+      <button onClick={() => changeStyle()}>Click</button>
     </Card>
   );
 };

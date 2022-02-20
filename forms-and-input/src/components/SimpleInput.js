@@ -9,9 +9,13 @@ const SimpleInput = (props) => {
   };
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    console.log(enteredName);
+    if (enteredName.trim() === "") {
+      return;
+    }
     const enteredValue = nameInputRef.current.value;
+    console.log(enteredName);
     console.log(enteredValue);
+    // inameInputRef.current.value = ''
     setEnteredName("");
     // using ref to clear input after submission is not recommended, because of manipulating dom
   };

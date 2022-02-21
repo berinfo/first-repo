@@ -4,21 +4,29 @@ import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
 import Notification from "./components/UI/Notification";
 import Products from "./components/Shop/Products";
-import { sendCardData } from "./store/cart-slice";
+import { sendCardData, fetchCartData } from "./store/cart-actions";
 
 let isInitial = true;
 
 function App() {
   const showCart = useSelector((state) => state.ui.cartIsVisible);
   const cart = useSelector((state) => state.cart);
+
   const notification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
   useEffect(() => {
     if (isInitial) {
       isInitial = false;
       return;
     }
-    dispatch(sendCardData(cart));
+    if (cart.changed) {
+      dispatch(sendCardData(cart));
+    }
   }, [cart, dispatch]);
 
   return (

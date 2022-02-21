@@ -7,15 +7,16 @@ const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (isLogin) {
     } else {
-      console.log("registracija");
       fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCs6mwFPwXfLg1Dq8hYu4vPZXuR4d3F8fE",
         {
@@ -30,11 +31,11 @@ const AuthForm = () => {
           },
         }
       ).then((res) => {
+        setLoading(false);
         if (res.ok) {
         } else {
           return res.json().then((data) => {
-            setError(data.error.message);
-            console.log(data);
+            setError("Authentication failed!");
           });
         }
       });
@@ -73,7 +74,8 @@ const AuthForm = () => {
           <p>{error}</p>
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? "Login" : "Create Account"}</button>
+          {!loading && <button>{isLogin ? "Login" : "Create Account"}</button>}
+          {loading && <p>Sending request...</p>}
           <button
             type="button"
             className={classes.toggle}
